@@ -1,17 +1,21 @@
 const path = require("path");
-const fs = require("fs");
+const fs = require("fs-extra");
 const solc = require("solc");
 
-const campaignPath = path.resolve(__dirname, "contracts", "Campaign.sol");
+const CONTRACTS_FILE_NAME = "Campaign.sol"
+
+const buildPath = path.resolve(__dirname, 'build');
+fs.removeSync(buildPath);
+
+const campaignPath = path.resolve(__dirname, "contracts", CONTRACTS_FILE_NAME);
 const source = fs.readFileSync(campaignPath, "utf8");
+
+const inputSources = {};
+inputSources[CONTRACTS_FILE_NAME] = {content: source};
 
 const input = {
   language: 'Solidity',
-  sources: {
-    'Campaign.sol': {
-      content: source,
-    },
-  },
+  sources: inputSources,
   settings: {
     outputSelection: {
       '*': {
@@ -23,6 +27,12 @@ const input = {
 
 const output = solc.compile(JSON.stringify(input));
 const compiled = JSON.parse(output);
-const contract = compiled.contracts['Campaign.sol'].Campaign;
 
-module.exports = contract;
+fs.ensureDirSync(buildPath);
+
+for(let contract in compiled.contracts[CONTRACTS_FILE_NAME]){
+  fs.outputJSONSync(
+    path.resolve(buildPath, contract + '.json'),
+    compiled.contracts[CONTRACTS_FILE_NAME][contract]
+  )
+}
