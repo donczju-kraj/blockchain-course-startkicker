@@ -21,11 +21,10 @@ contract Campaign {
         address payable recipient;
         bool complete;
         uint approvalCount;
-        mapping(address => bool) approvals;
     }
+    mapping(uint => mapping(address => bool)) public approvals;
 
-    uint numRequests;
-    mapping(uint => Request) requests;
+    Request[] public requests;
     address public manager;
     uint public minimumContribution;
     mapping(address => bool) public approvers;
@@ -33,6 +32,11 @@ contract Campaign {
 
     modifier restricted() {
         require(msg.sender == manager);
+        _;
+    }
+
+    modifier requireValidRequestIndex(uint index) {
+        require(index < requests.length, "Invalid request index");
         _;
     }
 
@@ -48,28 +52,16 @@ contract Campaign {
         approversCount++;
     }
 
-    function getRequest(
+    function getRequestDescription(
         uint index
     )
         public
         view
-        returns (
-            string memory description,
-            uint value,
-            address recipient,
-            bool complete,
-            uint approvalCount
-        )
+        requireValidRequestIndex(index)
+        returns (string memory description)
     {
-        require(index < numRequests);
         Request storage request = requests[index];
-        return (
-            request.description,
-            request.value,
-            request.recipient,
-            request.complete,
-            request.approvalCount
-        );
+        return request.description;
     }
 
     function createRequest(
@@ -77,31 +69,37 @@ contract Campaign {
         uint value,
         address payable recipient
     ) public restricted {
-        Request storage r = requests[numRequests++];
-        r.description = description;
-        r.value = value;
-        r.recipient = recipient;
-        r.complete = false;
-        r.approvalCount = 0;
+        requests.push(
+            Request({
+                description: description,
+                value: value,
+                recipient: recipient,
+                complete: false,
+                approvalCount: 0
+            })
+        );
     }
 
-    function approveRequest(uint index) public {
-        require(index < numRequests);
-        Request storage request = requests[index];
+    function approveRequest(uint index) public requireValidRequestIndex(index) {
+        require(approvers[msg.sender], "You are not a contributor");
+        require(
+            !approvals[index][msg.sender],
+            "You have already approved this request"
+        );
 
-        require(approvers[msg.sender]);
-        require(!request.approvals[msg.sender]);
-
-        request.approvals[msg.sender] = true;
-        request.approvalCount++;
+        approvals[index][msg.sender] = true;
+        requests[index].approvalCount++;
     }
 
-    function finalizeRequest(uint index) public restricted {
-        require(index < numRequests);
-
+    function finalizeRequest(
+        uint index
+    ) public restricted requireValidRequestIndex(index) {
         Request storage request = requests[index];
-        require(!request.complete);
-        require(request.approvalCount > (approversCount / 2));
+        require(!request.complete, "Request is already complete!");
+        require(
+            request.approvalCount > (approversCount / 2),
+            "Not enough approvals to process."
+        );
 
         request.recipient.transfer(request.value);
 
