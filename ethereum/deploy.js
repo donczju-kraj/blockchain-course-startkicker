@@ -1,26 +1,28 @@
-const HDWalletProvider = require('@truffle/hdwallet-provider');
-const { Web3 } = require('web3');
+const { ethers } = require("ethers");
 const compiledFactory = require('./build/CampaignFactory.json');
 
 require('dotenv').config();
 
-const provider = new HDWalletProvider(
-  process.env.MNEMONIC,
-  process.env.INFURA_API_KEY
-);
-const web3 = new Web3(provider);
-
 const deploy = async () => {
-  const accounts = await web3.eth.getAccounts();
+  const mnemonic = process.env.MNEMONIC;
+  const infuraUrl = process.env.INFURA_API_KEY;
 
-  console.log('Attempting to deploy from account', accounts[0]);
+  const provider = new ethers.JsonRpcProvider(infuraUrl);
+  const wallet = ethers.Wallet.fromPhrase(mnemonic).connect(provider);
+
+  console.log('Attempting to deploy from account', wallet.address);
 
   try {
-    const result = await new web3.eth.Contract(compiledFactory.abi)
-      .deploy({ data: compiledFactory.evm.bytecode.object })
-      .send({ gas: '5000000', from: accounts[0] });
-  
-    console.log("Contract deployed to", result.options.address);
+    const factory = new ethers.ContractFactory(
+      compiledFactory.abi,
+      compiledFactory.evm.bytecode.object,
+      wallet
+    );
+
+    const contract = await factory.deploy({
+      gasLimit: 5000000,
+    });
+    console.log("Contract deployed to", contract.target);
   } catch (error) {
     console.error('Deployment failed with error:', error.message || error);
   } finally {
