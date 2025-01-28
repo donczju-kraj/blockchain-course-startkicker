@@ -16,8 +16,12 @@ export default function CampaignsOverviewClient({
         <p className="text-xl font-semibold mb-2">Open campaigns:</p>
         <div className="space-y-3">
           {campaigns.length > 0 ? (
-            campaigns.map((campaign) => (
-              <CampaignCard key={campaign} campaignAddress={campaign} />
+            campaigns.map((campaign, index) => (
+              <CampaignCard
+                key={campaign}
+                index={index}
+                campaignAddress={campaign}
+              />
             ))
           ) : (
             <p>No campaigns found</p>
