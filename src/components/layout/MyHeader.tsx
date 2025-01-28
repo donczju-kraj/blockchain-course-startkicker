@@ -14,6 +14,11 @@ export default function MyHeader() {
                 Home
               </Link>
             </li>
+            <li>
+              <Link href="/new-campaign" className="hover:underline">
+                Add campaign
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
