@@ -1,15 +1,10 @@
 import getFactory from "@/utils/campaignFactoryInstance";
 import getCampaigns from "@/utils/getCampaigns";
-import { type Address } from "web3";
+import CampaignsOverviewClient from "./CampaignsOverviewClient";
 
 export default async function CampaignsOverview() {
   const factory = getFactory();
-  const campaigns: Address[] = await getCampaigns(factory);
+  const campaigns = await getCampaigns(factory);
 
-  return (
-    <div>
-      <p>Some campaigns data to be shown here</p>
-      <p>{campaigns[0]}</p>
-    </div>
-  );
+  return <CampaignsOverviewClient campaigns={campaigns} />;
 }
