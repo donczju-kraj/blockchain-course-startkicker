@@ -13,15 +13,17 @@ export default function CampaignsOverviewClient({
 }: CampaignsOverviewClientProps) {
   const factory = useFactory();
   return (
-    <div>
-      <p className="text-xl font-semibold mb-2">Campaigns:</p>
-      {campaigns.length > 0 ? (
-        campaigns.map((campaign) => (
-          <CampaignCard key={campaign} campaignAddress={campaign} />
-        ))
-      ) : (
-        <p>No campaigns found</p>
-      )}
+    <div className="grid grid-cols-3 gap-4 items-start">
+      <div className="col-span-2">
+        <p className="text-xl font-semibold mb-2">Open campaigns:</p>
+        {campaigns.length > 0 ? (
+          campaigns.map((campaign) => (
+            <CampaignCard key={campaign} campaignAddress={campaign} />
+          ))
+        ) : (
+          <p>No campaigns found</p>
+        )}
+      </div>
       <AddCampaign />
     </div>
   );

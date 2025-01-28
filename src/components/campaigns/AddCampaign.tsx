@@ -6,7 +6,7 @@ import Button from "../button/Button";
 export default function AddCampaign() {
   const factory = useFactory();
   return (
-    <div className="flex items-center justify-between mt-4">
+    <div className="flex flex-col space-y-3 justify-center">
       <p className="text-lg font-semibold">
         Do you want to create a new campaign?
       </p>
