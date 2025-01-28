@@ -25,8 +25,6 @@ const deploy = async () => {
     console.log("Contract deployed to", contract.target);
   } catch (error) {
     console.error('Deployment failed with error:', error.message || error);
-  } finally {
-    provider.engine.stop();
   }
 };
 deploy();

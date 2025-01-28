@@ -31,8 +31,13 @@ const compiled = JSON.parse(output);
 fs.ensureDirSync(buildPath);
 
 for(let contract in compiled.contracts[CONTRACTS_FILE_NAME]){
+  const contractData = compiled.contracts[CONTRACTS_FILE_NAME][contract];
+  fs.outputJSONSync(
+    path.resolve(buildPath, contract + '-abi.json'),
+    contractData.abi
+  );
   fs.outputJSONSync(
     path.resolve(buildPath, contract + '.json'),
-    compiled.contracts[CONTRACTS_FILE_NAME][contract]
-  )
+    contractData
+  );
 }
