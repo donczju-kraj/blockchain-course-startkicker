@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import clsx from "clsx";
 import toast from "react-hot-toast";
@@ -21,19 +22,21 @@ export default function AddCampaignForm({ className }: { className?: string }) {
     formState: { errors },
   } = useForm<Inputs>();
   const [processingReq, setProcessingReq] = useState<boolean>(false);
+  const router = useRouter();
   const factory = useFactory();
   const web3 = useWeb3();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
     setProcessingReq(true);
     const accounts = await web3?.eth.getAccounts();
+
     if (accounts && factory) {
       try {
         await factory?.methods.createCampaign(data.minContribution).send({
           from: accounts[0],
         });
         toast.success("Campaign succesfully created!");
+        router.push("/");
       } catch (error: unknown) {
         const errMessage: string = getErrorMessage(error);
         console.log("Failed to create campaign:", errMessage);
