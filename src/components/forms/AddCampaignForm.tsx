@@ -47,7 +47,7 @@ export default function AddCampaignForm({ className }: { className?: string }) {
   return (
     <form
       className={clsx(
-        "mx-auto rounded-2xl p-6 bg-gray-800 max-w-lg flex flex-col space-y-4",
+        "mx-auto rounded-2xl p-6 bg-gray-800 max-w-lg flex flex-col space-y-4 border border-gray-200",
         className
       )}
       onSubmit={handleSubmit(onSubmit)}
