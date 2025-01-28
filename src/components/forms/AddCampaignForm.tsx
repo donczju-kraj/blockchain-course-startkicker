@@ -47,7 +47,7 @@ export default function AddCampaignForm({ className }: { className?: string }) {
   return (
     <form
       className={clsx(
-        "mx-auto rounded-2xl p-6 bg-gray-800 max-w-lg flex flex-col space-y-4 border border-gray-200",
+        "mx-auto rounded-2xl p-6 bg-gray-800 max-w-lg flex flex-col space-y-6 border border-gray-200",
         className
       )}
       onSubmit={handleSubmit(onSubmit)}
@@ -58,14 +58,14 @@ export default function AddCampaignForm({ className }: { className?: string }) {
         <div className="relative grow">
           <input
             type="number"
-            className="border border-gray-200 px-2 py-1 rounded-lg w-full"
+            className="border border-gray-200 px-4 py-1 rounded-lg w-full bg-gray-700"
             defaultValue={100}
             {...register("minContribution", {
               required: true,
               min: { value: 0, message: "Minimum value is 0." },
             })}
           />
-          <p className="absolute top-1 right-8">wei</p>
+          <p className="absolute top-1 right-10">wei</p>
         </div>
         {errors.minContribution && (
           <p>message:{errors.minContribution.message}</p>
