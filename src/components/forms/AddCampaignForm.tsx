@@ -8,8 +8,10 @@ import toast from "react-hot-toast";
 
 import useFactory from "@/hooks/useFactory";
 import useWeb3 from "@/hooks/useWeb3";
-import Spinner from "../icons/Spinner";
+import FormSubmitBtn from "./FormSubmitBtn";
+import ProcessingRequestInfo from "../commons/ProcessingRequestInfo";
 import { getErrorMessage } from "@/utils/utils";
+import { FieldLabel, FormFieldContainer, FormFieldError } from "./FormFields";
 
 type Inputs = {
   minContribution: number;
@@ -56,8 +58,8 @@ export default function AddCampaignForm({ className }: { className?: string }) {
       onSubmit={handleSubmit(onSubmit)}
     >
       {/* register your input into the hook by invoking the "register" function */}
-      <div className="flex flex-col space-y-2">
-        <label className="font-semibold">Minimum contribution:</label>
+      <FormFieldContainer>
+        <FieldLabel>Minimum contribution:</FieldLabel>
         <div className="relative grow">
           <input
             type="number"
@@ -71,23 +73,11 @@ export default function AddCampaignForm({ className }: { className?: string }) {
           <p className="absolute top-1 right-10">wei</p>
         </div>
         {errors.minContribution && (
-          <p>message:{errors.minContribution.message}</p>
+          <FormFieldError>{errors.minContribution.message}</FormFieldError>
         )}
-      </div>
+      </FormFieldContainer>
 
-      {processingReq ? (
-        <div className="flex mx-auto px-3 py-2 bg-blue-800 rounded-lg">
-          <Spinner />
-          <p className="flex text-sm font-semibold">
-            Request is being processed
-          </p>
-        </div>
-      ) : (
-        <input
-          className="transition ease-in-out delay-150 duration-300 hover:scale-110 mx-auto w-32 px-2 py-1 rounded-lg bg-blue-700 font-semibold hover:bg-blue-800"
-          type="submit"
-        />
-      )}
+      {processingReq ? <ProcessingRequestInfo /> : <FormSubmitBtn />}
     </form>
   );
 }

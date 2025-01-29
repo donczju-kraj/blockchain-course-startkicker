@@ -15,7 +15,7 @@ export default async function Page({
       </div>
       <div className="grid grid-cols-3 gap-6">
         <CampaignDetails address={campaignAddress} className="col-span-2" />
-        <ContributeToCampaign />
+        <ContributeToCampaign address={campaignAddress} />
       </div>
     </>
   );
