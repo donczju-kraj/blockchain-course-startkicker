@@ -8,10 +8,14 @@ import toast from "react-hot-toast";
 
 import useFactory from "@/hooks/useFactory";
 import useWeb3 from "@/hooks/useWeb3";
-import FormSubmitBtn from "./FormSubmitBtn";
 import ProcessingRequestInfo from "../commons/ProcessingRequestInfo";
 import { getErrorMessage } from "@/utils/utils";
-import { FieldLabel, FormFieldContainer, FormFieldError } from "./FormFields";
+import {
+  FieldLabel,
+  FormFieldContainer,
+  FormFieldError,
+  FormSubmitBtn,
+} from "./FormFields";
 
 type Inputs = {
   minContribution: number;

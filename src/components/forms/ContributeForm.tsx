@@ -9,8 +9,12 @@ import useCampaign from "@/hooks/useCampaign";
 import { useCampaignStore } from "@/hooks/useCampaignStore";
 import { getErrorMessage } from "@/utils/utils";
 import ProcessingRequestInfo from "../commons/ProcessingRequestInfo";
-import FormSubmitBtn from "./FormSubmitBtn";
-import { FormFieldContainer, FieldLabel, FormFieldError } from "./FormFields";
+import {
+  FormFieldContainer,
+  FieldLabel,
+  FormFieldError,
+  FormSubmitBtn,
+} from "./FormFields";
 import { type CampaignDetails } from "@/hooks/useCampaignDetails";
 
 type Inputs = {
@@ -43,7 +47,7 @@ export default function ContributeForm({
     formState: { errors },
   } = useForm<Inputs>();
 
-  const onSumbit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const accounts = await web3?.eth.getAccounts();
 
     if (accounts && campaign) {
@@ -71,8 +75,8 @@ export default function ContributeForm({
 
   return (
     <form
-      className="mx-auto rounded-2xl p-6 bg-gray-800 max-w-lg flex flex-col space-y-6 border border-gray-200"
-      onSubmit={handleSubmit(onSumbit)}
+      className="mx-auto rounded-2xl p-6 bg-gray-800 max-w-xl flex flex-col space-y-6 border border-gray-200"
+      onSubmit={handleSubmit(onSubmit)}
     >
       <FormFieldContainer>
         <FieldLabel>Amount to contribute:</FieldLabel>

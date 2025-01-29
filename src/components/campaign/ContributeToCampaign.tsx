@@ -1,4 +1,4 @@
-import ContributeForm from "../forms/ ContributeForm";
+import ContributeForm from "../forms/ContributeForm";
 
 interface ContributeToCampaignProps {
   address: string;
