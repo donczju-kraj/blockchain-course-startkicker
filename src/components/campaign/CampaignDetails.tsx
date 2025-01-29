@@ -1,5 +1,9 @@
+"use client";
+
 import { ReactNode } from "react";
 import clsx from "clsx";
+
+import useCampaign from "@/hooks/useCampaign";
 
 function DetailContainer({ children }: { children: ReactNode }) {
   return (
@@ -8,7 +12,18 @@ function DetailContainer({ children }: { children: ReactNode }) {
     </div>
   );
 }
-export default function CampaignDetails({ className }: { className?: string }) {
+export default function CampaignDetails({
+  address,
+  className,
+}: {
+  address: string;
+  className?: string;
+}) {
+  const campaign = useCampaign(address);
+  if (campaign) {
+    console.log("campaign address:", campaign.options.address);
+  }
+
   return (
     <div className={clsx("grid grid-cols-2 gap-6", className)}>
       <DetailContainer>

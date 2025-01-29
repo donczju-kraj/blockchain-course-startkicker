@@ -14,7 +14,7 @@ export default async function Page({
         <p className="italic">{campaignAddress}</p>
       </div>
       <div className="grid grid-cols-3 gap-6">
-        <CampaignDetails className="col-span-2" />
+        <CampaignDetails address={campaignAddress} className="col-span-2" />
         <ContributeToCampaign />
       </div>
     </>

@@ -8,13 +8,13 @@ import { campaignABI } from "@/utils/abis";
 
 export type CampaignContract = Contract<typeof campaignABI>;
 
-export default function useFactory(campaignAddress: string){
+export default function useCampaign(campaignAddress: string){
   const [contract, setContract] = useState<CampaignContract | null>(null);
  
   useEffect(() => {
     if(!web3) return;
-    const factoryContract = new web3.eth.Contract(campaignABI, campaignAddress);
-    setContract(factoryContract);
+    const campaignContract = new web3.eth.Contract(campaignABI, campaignAddress);
+    setContract(campaignContract);
   }, [web3]);
 
   return contract;
