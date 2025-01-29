@@ -26,7 +26,8 @@ export default async function Page({
         </MyLink>
       </div>
 
-      <div className="flex">
+      <div className="flex justify-between items-end">
+        <h4 className="text-xl font-semibold">Requests</h4>
         <MyLink
           className="flex space-x-2 items-center"
           href={`/campaigns/${campaignAddress}/requests/new`}
