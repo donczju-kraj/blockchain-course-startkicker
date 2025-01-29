@@ -1,4 +1,4 @@
-import RequestsList from "@/components/requests/RequestsList";
+import RequestsTable from "@/components/requests/RequestsTable";
 import MyLink from "@/components/commons/MyLink";
 import AddCircle from "@/components/icons/AddCircle";
 import BackArrow from "@/components/icons/BackArrow";
@@ -12,17 +12,11 @@ export default async function Page({
 
   return (
     <section className="flex flex-col space-y-4">
-      <h4 className="text-xl font-semibold">
-        Requests for: <span className="text-lg italic">{campaignAddress}</span>
-      </h4>
-      <div className="flex space-x-6">
-        <MyLink
-          className="flex space-x-2 items-center"
-          href={`/campaigns/${campaignAddress}/requests/new`}
-        >
-          <AddCircle size={20} fill="fill-gray-200" />
-          <p>Add new request</p>
-        </MyLink>
+      <div className="flex justify-between">
+        <h4 className="text-xl font-semibold">
+          Pending requests for:{" "}
+          <span className="text-lg italic">{campaignAddress}</span>
+        </h4>
         <MyLink
           className="flex space-x-2 items-center"
           href={`/campaigns/${campaignAddress}`}
@@ -31,7 +25,16 @@ export default async function Page({
           <BackArrow />
         </MyLink>
       </div>
-      <RequestsList />
+      <div className="flex">
+        <MyLink
+          className="flex space-x-2 items-center"
+          href={`/campaigns/${campaignAddress}/requests/new`}
+        >
+          <AddCircle size={20} fill="fill-gray-200" />
+          <p>Add new request</p>
+        </MyLink>
+      </div>
+      <RequestsTable address={campaignAddress} />
     </section>
   );
 }
