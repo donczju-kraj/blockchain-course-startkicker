@@ -1,38 +1,18 @@
 "use client";
 
 import useCamapignRequests, { type Request } from "@/hooks/useCampaignRequests";
-import { ReactNode } from "react";
-
-function RowCell({ children }: { children: ReactNode }) {
-  return (
-    <td className="h-8 px-2 bg-gray-700 border border-gray-400">{children}</td>
-  );
-}
-
-function TableRow({ index, request }: { index: number; request: Request }) {
-  return (
-    <tr>
-      <RowCell>{index + 1}</RowCell>
-      <RowCell>{request.description}</RowCell>
-      <RowCell>{request.value}</RowCell>
-      <RowCell>{request.recipient}</RowCell>
-      <RowCell>{request.approvalCount}</RowCell>
-      <RowCell>Approve</RowCell>
-      <RowCell>Finalize</RowCell>
-    </tr>
-  );
-}
-
-function HeaderCell({ children }: { children: ReactNode }) {
-  return (
-    <th className="h-10 px-2 bg-gray-800 font-semibold border border-gray-400">
-      {children}
-    </th>
-  );
-}
+import useCampaignDetails from "@/hooks/useCampaignDetails";
+import { useCampaignStore } from "@/hooks/useCampaignStore";
+import type { CampaignDetails } from "@/hooks/useCampaignDetails";
+import { RequestRow } from "./RequestRow";
+import HeaderCell from "./HeaderCell";
 
 export default function RequestsTable({ address }: { address: string }) {
   const { requests } = useCamapignRequests(address);
+  useCampaignDetails(address);
+  const campaignDetails: CampaignDetails = useCampaignStore(
+    (state) => state.campaignDetails
+  );
 
   if (!requests) return <></>;
 
@@ -42,7 +22,7 @@ export default function RequestsTable({ address }: { address: string }) {
         <tr>
           <HeaderCell>ID</HeaderCell>
           <HeaderCell>Description</HeaderCell>
-          <HeaderCell>Amount</HeaderCell>
+          <HeaderCell>Amount [eth]</HeaderCell>
           <HeaderCell>Recipient</HeaderCell>
           <HeaderCell>Approval count</HeaderCell>
           <HeaderCell>Approve</HeaderCell>
@@ -51,7 +31,14 @@ export default function RequestsTable({ address }: { address: string }) {
       </thead>
       <tbody>
         {requests.map((req: Request, i: number) => {
-          return <TableRow key={i} index={i} request={req} />;
+          return (
+            <RequestRow
+              key={i}
+              index={i}
+              request={req}
+              approvers={campaignDetails.approversCount}
+            />
+          );
         })}
       </tbody>
     </table>

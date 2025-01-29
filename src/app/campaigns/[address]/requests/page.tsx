@@ -11,7 +11,7 @@ export default async function Page({
   const campaignAddress = (await params).address;
 
   return (
-    <section className="flex flex-col space-y-4">
+    <section className="flex flex-col space-y-6">
       <div className="flex justify-between">
         <h4 className="text-xl font-semibold">
           Pending requests for:{" "}
@@ -25,6 +25,7 @@ export default async function Page({
           <BackArrow />
         </MyLink>
       </div>
+
       <div className="flex">
         <MyLink
           className="flex space-x-2 items-center"
@@ -34,6 +35,7 @@ export default async function Page({
           <p>Add new request</p>
         </MyLink>
       </div>
+
       <RequestsTable address={campaignAddress} />
     </section>
   );
