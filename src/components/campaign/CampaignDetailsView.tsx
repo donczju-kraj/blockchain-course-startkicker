@@ -1,5 +1,6 @@
 "use client";
 
+import useWeb3 from "@/hooks/useWeb3";
 import { type CampaignDetails } from "@/hooks/useCampaignDetails";
 import { useCampaignStore } from "@/hooks/useCampaignStore";
 
@@ -26,6 +27,7 @@ export default function CampaignDetailsView({
 }: {
   className?: string;
 }) {
+  const web3 = useWeb3();
   const campaignDetails: CampaignDetails = useCampaignStore(
     (state) => state.campaignDetails
   );
@@ -59,7 +61,7 @@ export default function CampaignDetailsView({
         />
 
         <CampaignDetail
-          value={campaignDetails?.balance}
+          value={web3?.utils.fromWei(campaignDetails?.balance, "ether")}
           header="Campaign balance [ether]"
           description="The balance is how much money this campaign has left to spend."
         />

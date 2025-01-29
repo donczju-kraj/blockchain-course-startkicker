@@ -1,12 +1,20 @@
 import ContributeForm from "../forms/ ContributeForm";
 
-export default function ContributeToCampaign({ address }: { address: string }) {
+interface ContributeToCampaignProps {
+  address: string;
+  refresh: () => void;
+}
+
+export default function ContributeToCampaign({
+  address,
+  refresh,
+}: ContributeToCampaignProps) {
   return (
     <div>
       <h4 className="text-lg font-semibold mb-4">
         Contribute to this campaign!
       </h4>
-      <ContributeForm campaignAddress={address} />
+      <ContributeForm refresh={refresh} campaignAddress={address} />
     </div>
   );
 }

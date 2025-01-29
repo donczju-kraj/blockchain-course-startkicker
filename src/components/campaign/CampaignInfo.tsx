@@ -5,11 +5,14 @@ import CampaignDetailsView from "./CampaignDetailsView";
 import ContributeToCampaign from "./ContributeToCampaign";
 
 export default function CampaignInfo({ address }: { address: string }) {
-  useCampaignDetails(address);
+  const { refreshCampaignDetails } = useCampaignDetails(address);
   return (
     <div className="grid grid-cols-3 gap-6">
-      <CampaignDetailsView address={address} className="col-span-2" />
-      <ContributeToCampaign address={address} />
+      <CampaignDetailsView className="col-span-2" />
+      <ContributeToCampaign
+        refresh={refreshCampaignDetails}
+        address={address}
+      />
     </div>
   );
 }
