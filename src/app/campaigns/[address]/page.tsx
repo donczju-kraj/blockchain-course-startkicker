@@ -1,5 +1,4 @@
-import CampaignDetails from "@/components/campaign/CampaignDetails";
-import ContributeToCampaign from "@/components/campaign/ContributeToCampaign";
+import CampaignInfo from "@/components/campaign/CampaignInfo";
 
 export default async function Page({
   params,
@@ -13,10 +12,7 @@ export default async function Page({
         <h2 className="text-xl font-semibold">Campaign at:</h2>
         <p className="italic">{campaignAddress}</p>
       </div>
-      <div className="grid grid-cols-3 gap-6">
-        <CampaignDetails address={campaignAddress} className="col-span-2" />
-        <ContributeToCampaign address={campaignAddress} />
-      </div>
+      <CampaignInfo address={campaignAddress} />
     </>
   );
 }

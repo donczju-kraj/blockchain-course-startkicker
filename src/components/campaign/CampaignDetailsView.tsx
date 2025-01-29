@@ -1,26 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-
-import useWeb3 from "@/hooks/useWeb3";
-import useCampaign from "@/hooks/useCampaign";
-import { getErrorMessage } from "@/utils/utils";
-
-interface DetailsData {
-  0: string;
-  1: string;
-  2: number;
-  3: number;
-  4: string;
-}
-
-interface CampaignDetails {
-  minimumContribution: string;
-  balance: string;
-  requestsCount: number;
-  approversCount: number;
-  manager: string;
-}
+import { type CampaignDetails } from "@/hooks/useCampaignDetails";
+import { useCampaignStore } from "@/hooks/useCampaignStore";
 
 interface CampaignDetailProps {
   value: string | number | undefined;
@@ -40,43 +21,14 @@ function CampaignDetail({ value, header, description }: CampaignDetailProps) {
   );
 }
 
-export default function CampaignDetails({
-  address,
+export default function CampaignDetailsView({
   className,
 }: {
-  address: string;
   className?: string;
 }) {
-  const [campaignDetails, setCampaignDetails] =
-    useState<CampaignDetails | null>(null);
-  const web3 = useWeb3();
-  const campaign = useCampaign(address);
-
-  useEffect(() => {
-    const fetchCampaignDetails = async () => {
-      const accounts = await web3?.eth.getAccounts();
-      if (accounts && campaign) {
-        try {
-          const details: DetailsData = await campaign.methods
-            .getSummary()
-            .call({
-              from: accounts[0],
-            });
-          setCampaignDetails({
-            minimumContribution: details[0],
-            balance: details[1],
-            requestsCount: details[2],
-            approversCount: details[3],
-            manager: details[4],
-          });
-        } catch (error) {
-          const errMessage: string = getErrorMessage(error);
-          console.log("Failed to load campaign details.", errMessage);
-        }
-      }
-    };
-    fetchCampaignDetails();
-  }, [campaign]);
+  const campaignDetails: CampaignDetails = useCampaignStore(
+    (state) => state.campaignDetails
+  );
 
   return (
     <section className={className}>

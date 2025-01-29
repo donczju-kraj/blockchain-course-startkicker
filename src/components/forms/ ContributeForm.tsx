@@ -6,10 +6,12 @@ import toast from "react-hot-toast";
 
 import useWeb3 from "@/hooks/useWeb3";
 import useCampaign from "@/hooks/useCampaign";
+import { useCampaignStore } from "@/hooks/useCampaignStore";
 import { getErrorMessage } from "@/utils/utils";
 import ProcessingRequestInfo from "../commons/ProcessingRequestInfo";
 import FormSubmitBtn from "./FormSubmitBtn";
 import { FormFieldContainer, FieldLabel, FormFieldError } from "./FormFields";
+import { type CampaignDetails } from "@/hooks/useCampaignDetails";
 
 type Inputs = {
   contributionAmount: number;
@@ -22,6 +24,13 @@ export default function ContributeForm({
 }) {
   const web3 = useWeb3();
   const campaign = useCampaign(campaignAddress);
+  const campaignDetails: CampaignDetails = useCampaignStore(
+    (state) => state.campaignDetails
+  );
+
+  const minimumContribution = String(
+    web3?.utils.toNumber(campaignDetails.minimumContribution)
+  );
   const [processingReq, setProcessingReq] = useState<boolean>(false);
   const {
     register,
@@ -63,10 +72,13 @@ export default function ContributeForm({
           <input
             type="number"
             className="border border-gray-200 px-4 py-1 rounded-lg w-full bg-gray-700"
-            defaultValue={100}
+            defaultValue={minimumContribution}
             {...register("contributionAmount", {
               required: true,
-              min: { value: 0, message: "Minimum value is 0." },
+              min: {
+                value: minimumContribution,
+                message: `Minimum value is ${minimumContribution}.`,
+              },
             })}
           />
           <p className="absolute top-1 right-10">wei</p>
