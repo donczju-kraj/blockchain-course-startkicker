@@ -15,6 +15,7 @@ import {
   FormFieldContainer,
   FormFieldError,
   FormSubmitBtn,
+  FieldInputWithUnit,
 } from "./FormFields";
 
 type Inputs = {
@@ -66,18 +67,14 @@ export default function AddCampaignForm({ className }: { className?: string }) {
       {/* register your input into the hook by invoking the "register" function */}
       <FormFieldContainer>
         <FieldLabel>Minimum contribution:</FieldLabel>
-        <div className="relative grow">
-          <input
-            type="number"
-            className="border border-gray-200 px-4 py-1 rounded-lg w-full bg-gray-700"
-            defaultValue={100}
-            {...register("minContribution", {
-              required: true,
-              min: { value: 0, message: "Minimum value is 0." },
-            })}
-          />
-          <p className="absolute top-1 right-10">wei</p>
-        </div>
+        <FieldInputWithUnit
+          unit="wei"
+          defaultValue={100}
+          {...register("minContribution", {
+            required: true,
+            min: { value: 0, message: "Minimum value is 0." },
+          })}
+        />
         {errors.minContribution && (
           <FormFieldError>{errors.minContribution.message}</FormFieldError>
         )}

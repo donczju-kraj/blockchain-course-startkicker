@@ -14,6 +14,7 @@ import {
   FieldLabel,
   FormFieldError,
   FormSubmitBtn,
+  FieldInputWithUnit,
 } from "./FormFields";
 import { type CampaignDetails } from "@/hooks/useCampaignDetails";
 
@@ -80,21 +81,17 @@ export default function ContributeForm({
     >
       <FormFieldContainer>
         <FieldLabel>Amount to contribute:</FieldLabel>
-        <div className="relative grow">
-          <input
-            type="text"
-            className="border border-gray-200 px-4 py-1 rounded-lg w-full bg-gray-700"
-            defaultValue={minimumContribution}
-            {...register("contributionAmount", {
-              required: true,
-              min: {
-                value: minimumContribution,
-                message: `Minimum value is ${minimumContribution}.`,
-              },
-            })}
-          />
-          <p className="absolute top-1 right-10">ether</p>
-        </div>
+        <FieldInputWithUnit
+          unit="ether"
+          defaultValue={minimumContribution}
+          {...register("contributionAmount", {
+            required: true,
+            min: {
+              value: minimumContribution,
+              message: `Minimum value is ${minimumContribution}.`,
+            },
+          })}
+        />
         {errors.contributionAmount && (
           <FormFieldError>{errors.contributionAmount.message}</FormFieldError>
         )}

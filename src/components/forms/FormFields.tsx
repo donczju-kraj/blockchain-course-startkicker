@@ -1,5 +1,45 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import clsx from "clsx";
+
+interface FieldInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  className?: string;
+}
+
+export function FieldInput({ className, ...rest }: FieldInputProps) {
+  return (
+    <input
+      type="text"
+      className={clsx(
+        "border border-gray-200 px-4 py-1 rounded-lg w-full bg-gray-700",
+        className
+      )}
+      {...rest}
+    />
+  );
+}
+
+interface FieldInputWithUnitProps extends FieldInputProps {
+  unit: string;
+}
+
+export function FieldInputWithUnit({
+  unit,
+  className,
+  ...rest
+}: FieldInputWithUnitProps) {
+  return (
+    <div className={clsx("flex grow", className)}>
+      <input
+        type="text"
+        className="border border-gray-200 px-4 py-1 rounded-l-lg w-full bg-gray-700"
+        {...rest}
+      />
+      <p className="font-semibold bg-gray-200 text-gray-800 rounded-r-lg px-2 flex items-center">
+        {unit}
+      </p>
+    </div>
+  );
+}
 
 export function FieldLabel({ children }: { children: ReactNode }) {
   return <label className="font-semibold">{children}</label>;

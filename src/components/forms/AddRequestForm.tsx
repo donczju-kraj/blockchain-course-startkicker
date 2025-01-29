@@ -12,6 +12,8 @@ import {
   FieldLabel,
   FormFieldError,
   FormSubmitBtn,
+  FieldInput,
+  FieldInputWithUnit,
 } from "./FormFields";
 import { getErrorMessage } from "@/utils/utils";
 
@@ -71,16 +73,14 @@ export default function AddRequestForm({ address }: { address: string }) {
     >
       <FormFieldContainer>
         <FieldLabel>Description:</FieldLabel>
-        <div className="relative grow">
-          <textarea
-            rows={4}
-            className="border border-gray-200 px-4 py-1 rounded-lg w-full bg-gray-700"
-            defaultValue=""
-            {...register("description", {
-              required: true,
-            })}
-          />
-        </div>
+        <textarea
+          rows={4}
+          className="border border-gray-200 px-4 py-1 rounded-lg w-full bg-gray-700"
+          defaultValue=""
+          {...register("description", {
+            required: true,
+          })}
+        />
         {errors.description && (
           <FormFieldError>{errors.description.message}</FormFieldError>
         )}
@@ -88,16 +88,13 @@ export default function AddRequestForm({ address }: { address: string }) {
 
       <FormFieldContainer>
         <FieldLabel>Recipient:</FieldLabel>
-        <div className="relative grow">
-          <input
-            type="text"
-            className="border border-gray-200 px-4 py-1 rounded-lg w-full bg-gray-700"
-            defaultValue=""
-            {...register("recipient", {
-              required: true,
-            })}
-          />
-        </div>
+        <FieldInput
+          className="border border-gray-200 px-4 py-1 rounded-lg w-full bg-gray-700"
+          defaultValue=""
+          {...register("recipient", {
+            required: true,
+          })}
+        />
         {errors.recipient && (
           <FormFieldError>{errors.recipient.message}</FormFieldError>
         )}
@@ -105,17 +102,13 @@ export default function AddRequestForm({ address }: { address: string }) {
 
       <FormFieldContainer>
         <FieldLabel>Value</FieldLabel>
-        <div className="relative grow">
-          <input
-            type="text"
-            className="border border-gray-200 px-4 py-1 rounded-lg w-full bg-gray-700"
-            defaultValue=""
-            {...register("value", {
-              required: true,
-            })}
-          />
-          <p className="absolute top-1 right-10">ether</p>
-        </div>
+        <FieldInputWithUnit
+          unit="ether"
+          defaultValue=""
+          {...register("value", {
+            required: true,
+          })}
+        />
         {errors.value && (
           <FormFieldError>{errors.value.message}</FormFieldError>
         )}
