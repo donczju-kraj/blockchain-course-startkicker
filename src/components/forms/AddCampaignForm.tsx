@@ -29,10 +29,10 @@ export default function AddCampaignForm({ className }: { className?: string }) {
   const web3 = useWeb3();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    setProcessingReq(true);
     const accounts = await web3?.eth.getAccounts();
 
     if (accounts && factory) {
+      setProcessingReq(true);
       try {
         await factory?.methods.createCampaign(data.minContribution).send({
           from: accounts[0],
@@ -46,6 +46,8 @@ export default function AddCampaignForm({ className }: { className?: string }) {
       } finally {
         setProcessingReq(false);
       }
+    } else {
+      toast.error("Failed to load web3 accounts, operation is not possible.");
     }
   };
 

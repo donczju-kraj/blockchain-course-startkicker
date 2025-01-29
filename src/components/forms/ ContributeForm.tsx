@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
 
+import useWeb3 from "@/hooks/useWeb3";
 import useCampaign from "@/hooks/useCampaign";
 import { getErrorMessage } from "@/utils/utils";
 import ProcessingRequestInfo from "../commons/ProcessingRequestInfo";
@@ -19,6 +20,7 @@ export default function ContributeForm({
 }: {
   campaignAddress: string;
 }) {
+  const web3 = useWeb3();
   const campaign = useCampaign(campaignAddress);
   const [processingReq, setProcessingReq] = useState<boolean>(false);
   const {
@@ -28,8 +30,25 @@ export default function ContributeForm({
   } = useForm<Inputs>();
 
   const onSumbit: SubmitHandler<Inputs> = async (data) => {
-    setProcessingReq(true);
-    console.log(data);
+    const accounts = await web3?.eth.getAccounts();
+
+    if (accounts && campaign) {
+      setProcessingReq(true);
+      try {
+        await campaign?.methods.contribute(data.contributionAmount).send({
+          from: accounts[0],
+        });
+      } catch (error: unknown) {
+        const errMessage: string = getErrorMessage(error);
+        console.log("Failed to contribute to the campaign:", errMessage);
+        toast.error(`Failed to contribute to the campaign\n${errMessage}`);
+      } finally {
+        setProcessingReq(false);
+      }
+    } else {
+      toast.error("Failed to load web3 accounts, operation is not possible.");
+    }
+
     setProcessingReq(false);
   };
 
