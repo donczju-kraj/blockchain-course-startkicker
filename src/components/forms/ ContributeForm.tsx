@@ -32,9 +32,10 @@ export default function ContributeForm({
     (state) => state.campaignDetails
   );
 
-  const minimumContribution = String(
-    web3?.utils.fromWei(campaignDetails.minimumContribution, "ether")
-  );
+  const minimumContribution = web3
+    ? String(web3.utils.fromWei(campaignDetails.minimumContribution, "ether"))
+    : 0;
+
   const [processingReq, setProcessingReq] = useState<boolean>(false);
   const {
     register,
