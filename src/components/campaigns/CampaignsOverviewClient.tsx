@@ -24,7 +24,7 @@ export default function CampaignsOverviewClient({
               />
             ))
           ) : (
-            <p>No campaigns found</p>
+            <p className="text-xl">No campaigns found...</p>
           )}
         </div>
       </div>
